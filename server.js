@@ -20,7 +20,6 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-
 // Load chat history
 try {
     const data = fs.readFileSync(chatHistoryFile);
@@ -38,21 +37,15 @@ app.get('/', (req, res) => {
 app.post('/login', (req, res) => {
     const { username } = req.body;
     if (username) {
-        req.app.locals.username = username; //simpan sementara username di app.locals
-        res.redirect('/chat');
+        res.redirect('/chat'); // langsung redirect ke /chat
     } else {
         res.render('index', { error: "Username cannot be empty" });
     }
 });
 
 app.get('/chat', (req, res) => {
-     const username = req.app.locals.username;
-
-    if (username) {
-          res.render('chat', { username: username }); // Kirim username ke chat.ejs
-    } else {
-        res.redirect('/');
-    }
+        res.render('chat', {username: req.body.username}); //username dikirim melalui body
+  
 });
 
 app.get('/history', (req, res) => {
@@ -61,18 +54,16 @@ app.get('/history', (req, res) => {
 
 // Socket.IO
 io.on('connection', (socket) => {
-        const username = socket.handshake.query.username; // Ambil username dari query parameter
-
-
+    const username = socket.handshake.query.username;
     console.log('A user connected with username:', username);
     socket.emit('chat history', chatHistory);
 
     socket.on('chat message', (msg) => {
-        const message = { username, message: msg }; //gunakan username dari query parameter
+        const message = { username, message: msg };
         chatHistory.push(message);
         io.emit('chat message', message);
 
-                fs.writeFile(chatHistoryFile, JSON.stringify(chatHistory), (err) => {
+        fs.writeFile(chatHistoryFile, JSON.stringify(chatHistory), (err) => {
             if (err) {
                 console.error('Error saving chat history:', err);
             }
@@ -85,6 +76,7 @@ io.on('connection', (socket) => {
 });
 
 // Start Server
-http.listen(3000, () => {
-    console.log('listening on *:3000');
+const PORT = process.env.PORT || 3000; // Menggunakan port dari environment variable atau 3000
+http.listen(PORT, () => {
+    console.log(`listening on *:${PORT}`);
 });
