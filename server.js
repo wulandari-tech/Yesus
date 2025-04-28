@@ -23,15 +23,16 @@ app.use(bodyParser.json());
 
 // Session Configuration (MemoryStore - NOT FOR PRODUCTION)
 app.use(session({
-    secret: 'your_secret_key', // Ganti dengan secret key yang kuat dan unik!
-    resave: false,
+    secret: 'your_secret_key',  // Ganti dengan secret key yang kuat dan unik!
+    resave: false, // tambahkan baris ini
     saveUninitialized: false,
     cookie: {
-        maxAge: 24 * 60 * 60 * 1000, 
-        secure: false,          // Set "true" jika menggunakan HTTPS
-        httpOnly: true          
+        maxAge: 24 * 60 * 60 * 1000,
+        secure: true,  // Setel true jika menggunakan HTTPS        
+        httpOnly: false,
+      
     },
-    store: new session.MemoryStore()
+    store: new session.MemoryStore() 
 }));
 
 io.use((socket, next) => {
