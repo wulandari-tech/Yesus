@@ -7,17 +7,27 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 <link href="/css/bootstrap.min.css" rel="stylesheet">
 <link href="/css/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-
 </head>
 <body>
-  <h1>Login</h1>
+    <h1>Login</h1>
     <% if (error) { %>
-        <p style="color: red;"><%= error %></p>
+    <p style="color: red;"><%= error %></p>
     <% } %>
-  <form action="/login" method="post">
-    <input type="text" name="username" placeholder="Username">
-    <button type="submit">Login</button>
-  </form>
+    <form id="loginForm" action="/login" method="post">
+        <input type="text" name="username" id="username" placeholder="Username">
+        <button type="submit">Login</button>
+    </form>
+  <script>
+      document.getElementById('loginForm').addEventListener('submit', function(event) {
+          event.preventDefault();
+          const username = document.getElementById('username').value;
+          if (username) {
+              window.localStorage.setItem('username', username);
+                  this.submit();
+          } else {
+                alert("Username cannot be empty")
+          }
+      });
+  </script>
 </body>
 </html>

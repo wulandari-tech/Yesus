@@ -37,15 +37,18 @@ app.get('/', (req, res) => {
 app.post('/login', (req, res) => {
     const { username } = req.body;
     if (username) {
-        res.redirect('/chat'); // langsung redirect ke /chat
+           res.redirect('/chat');
+
+
     } else {
         res.render('index', { error: "Username cannot be empty" });
     }
 });
 
 app.get('/chat', (req, res) => {
-        res.render('chat', {username: req.body.username}); //username dikirim melalui body
-  
+    res.render('chat'); // tidak perlu lagi mengirim username di sini
+
+
 });
 
 app.get('/history', (req, res) => {
@@ -56,6 +59,11 @@ app.get('/history', (req, res) => {
 io.on('connection', (socket) => {
     const username = socket.handshake.query.username;
     console.log('A user connected with username:', username);
+        if (!username) {
+        return socket.disconnect(); // Disconnect if username is not provided
+
+    }
+
     socket.emit('chat history', chatHistory);
 
     socket.on('chat message', (msg) => {
@@ -75,8 +83,9 @@ io.on('connection', (socket) => {
     });
 });
 
+
 // Start Server
-const PORT = process.env.PORT || 3000; // Menggunakan port dari environment variable atau 3000
+const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
     console.log(`listening on *:${PORT}`);
 });

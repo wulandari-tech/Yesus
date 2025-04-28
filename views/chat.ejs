@@ -9,18 +9,15 @@
 <link href="/css/bootstrap.min.css" rel="stylesheet">
 <link href="/css/tailwind.min.css" rel="stylesheet">
 </head>
+  <link rel="stylesheet" href="/css/style.css">
 <body>
-  <h1>Welcome, <%= username %></h1>
+  <h1>Welcome</h1>
   <div id="messages"></div>
   <form action="">
     <input id="m" autocomplete="off" /><button>Send</button>
   </form>
-    <script>
-        let username = '<%= username %>';
-    </script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
   <script src="/js/script.js"></script>
 </body>
 </html>
