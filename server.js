@@ -11,9 +11,15 @@ const io = require('socket.io')(http, {
 const fs = require('fs');
 const bodyParser = require('body-parser');
 
-
 const chatHistoryFile = 'chat_history.json';
 let chatHistory = [];
+
+// Middleware
+app.use(express.static('public'));
+app.set('view engine', 'ejs');
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 
 // Load chat history
 try {
@@ -21,76 +27,52 @@ try {
     chatHistory = JSON.parse(data);
 } catch (err) {
     console.error("Error loading chat history:", err);
-    fs.writeFileSync(chatHistoryFile, JSON.stringify([]));  // Create new file if it doesn't exist
-
+    fs.writeFileSync(chatHistoryFile, JSON.stringify([]));
 }
-
-app.use(express.static('public'));
-app.set('view engine', 'ejs');
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-
-
-
 
 // Routes
 app.get('/', (req, res) => {
-
-        res.render('index', { error: null });
-
+    res.render('index', { error: null });
 });
-
 
 app.post('/login', (req, res) => {
     const { username } = req.body;
-    if(username) {
-        // Simpan username di dalam memory saja, karena kita tidak pakai session
-        req.app.locals.username = username;
-            res.redirect('/chat');
-
+    if (username) {
+        req.app.locals.username = username; //simpan sementara username di app.locals
+        res.redirect('/chat');
     } else {
-         res.render('index', { error: "Username cannot be empty" });
-
+        res.render('index', { error: "Username cannot be empty" });
     }
 });
 
-
-
-
 app.get('/chat', (req, res) => {
- // Gunakan username yang disimpan di memory
-    const username = req.app.locals.username;
+     const username = req.app.locals.username;
+
     if (username) {
-        res.render('chat', { username: username, chatHistory });
+          res.render('chat', { username: username }); // Kirim username ke chat.ejs
     } else {
         res.redirect('/');
     }
 });
 
-
-
 app.get('/history', (req, res) => {
     res.json(chatHistory);
 });
 
-
-
+// Socket.IO
 io.on('connection', (socket) => {
-    console.log('A user connected');
-     // Ambil username dari memory di server
-     const username = socket.request.app.locals.username;
+        const username = socket.handshake.query.username; // Ambil username dari query parameter
 
+
+    console.log('A user connected with username:', username);
     socket.emit('chat history', chatHistory);
 
-
     socket.on('chat message', (msg) => {
-                 const message = { username: username, message: msg };
-
+        const message = { username, message: msg }; //gunakan username dari query parameter
         chatHistory.push(message);
-
         io.emit('chat message', message);
 
-          fs.writeFile(chatHistoryFile, JSON.stringify(chatHistory), (err) => {
+                fs.writeFile(chatHistoryFile, JSON.stringify(chatHistory), (err) => {
             if (err) {
                 console.error('Error saving chat history:', err);
             }
@@ -98,11 +80,11 @@ io.on('connection', (socket) => {
     });
 
     socket.on('disconnect', () => {
-        console.log('User disconnected');
+        console.log('User disconnected:', username);
     });
 });
 
-
+// Start Server
 http.listen(3000, () => {
     console.log('listening on *:3000');
 });

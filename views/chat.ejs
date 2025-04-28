@@ -3,23 +3,21 @@
 <head>
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat App</title>
-    <link rel="stylesheet" href="css/style.css">
-
+  <title>Chat App</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
-    <h1>Welcome, <%= username %></h1>
-    <div id="messages"></div>
-    <form action="">
-        <input id="m" autocomplete="off" /><button>Send</button>
-    </form>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <script>
+        let username = '<%= username %>'; // Declare username variable for client-side use
     </script>
-    <script src="/js/script.js"></script>
-</body>
 
+  <h1>Welcome, <%= username %></h1>
+  <div id="messages"></div>
+  <form action="">
+    <input id="m" autocomplete="off" /><button>Send</button>
+  </form>
+
+  <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="/js/script.js"></script>  </body>
 </html>
