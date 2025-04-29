@@ -1,88 +1,150 @@
+/* General Styling */
 body {
+    font-family: 'Poppins', sans-serif;
     margin: 0;
-    padding-bottom: 3rem;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  }
-  
-  #messages {
+    background: #f4f4f4;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Login Page */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1; /* takes up remaining space */
+
+
+}
+
+.login-form {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    width: 350px;
+
+}
+
+
+.login-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #3498db; /* Blue color for heading */
+
+}
+
+.login-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.login-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #2ecc71; /* Green login button */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+      transition: background-color 0.3s ease;
+
+
+
+}
+.login-form button:hover {
+    background-color: #27ae60;
+}
+
+
+/* Chat Page */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+    height: 100%;
+
+
+
+}
+
+.chat-header {
+    background: #3498db; /* Blue header */
+    color: white;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    flex-shrink: 0;
+
+}
+
+#messages {
     list-style-type: none;
     margin: 0;
-    padding: 0;
-  }
+    padding: 20px;
+        flex: 1;
+    overflow-y: auto;
+     background: linear-gradient(to bottom, #f9f9f9, #f5f5f5); /* subtle gradient */
 
-#messages div{
-    padding: 5px 10px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-}
 
-.sent{
-    background-color: #dcf8c6;
-    margin-left: auto;
-    width: fit-content;
 
 }
 
+.message {
+    padding: 10px 15px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    max-width: 70%;
+    clear: both;
+    word-break: break-word;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
 
-.received{
-        background-color: #fff;
-        width: fit-content;
+.sent {
+    background-color: #e9f5db; /* Very Light green for sent messages */
+    align-self: flex-end;
+}
+
+.received {
+    background-color: #fff;   /* White for received messages */
+
 
 }
-  
-  #form {
-    background: #000;
-    padding: 0.25rem;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+
+form {
     display: flex;
-    height: 3rem;
-    box-sizing: border-box;
-    backdrop-filter: blur(10px);
-  }
-  #form input {
-    border: none;
-    padding: 0 1rem;
-    flex-grow: 1;
-    border-radius: 2rem;
-    margin: 0.25rem;
-  }
-  #form button {
-    background: #333;
-    border: none;
-    padding: 0 1rem;
-    margin: 0.25rem;
-    border-radius: 3px;
-    outline: none;
-    color: #fff;
-  }
-
-
-form{
-    display: flex;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: white;
     padding: 10px;
-    box-sizing: border-box;
+    background: #fff;
+    border-top: 1px solid #eee;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    flex-shrink: 0;
 
 }
-  
-input{
-    flex-grow: 1;
-    border: none;
+
+form input {
+    border: 1px solid #ddd;
+    border-radius: 4px;
     padding: 10px;
-    border-radius: 5px;
+    flex-grow: 1;
+    margin-right: 10px;
 }
 
-button{
-        border: none;
-    padding: 10px;
-    border-radius: 5px;
-        background-color: #007bff;
+form button {
+    padding: 10px 20px;
+    background-color: #2ecc71; /* Green send button */
     color: white;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+        background-color: #27ae60;
+
 }
